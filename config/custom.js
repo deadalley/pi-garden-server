@@ -9,14 +9,25 @@
  */
 
 module.exports.custom = {
+  /**************************************************************************
+   *                                                                         *
+   * The TTL (time-to-live) for various sorts of tokens before they expire.  *
+   *                                                                         *
+   **************************************************************************/
+  passwordResetTokenTTL: 24 * 60 * 60 * 1000, // 24 hours
+  emailProofTokenTTL: 24 * 60 * 60 * 1000, // 24 hours
 
-  /***************************************************************************
-  *                                                                          *
-  * Any other custom config this Sails app should use during development.    *
-  *                                                                          *
-  ***************************************************************************/
-  // sendgridSecret: 'SG.fake.3e0Bn0qSQVnwb1E4qNPz9JZP5vLZYqjh7sn8S93oSHU',
-  // stripeSecret: 'sk_test_Zzd814nldl91104qor5911gjald',
-  // …
+  // The sender that all outgoing emails will appear to come from.
+  fromEmailAddress: 'noreply@pi-garden.com',
+  fromName: 'PiGarden Home',
 
+  // Email address for receiving support messages & other correspondences.
+  // > If you're using the default privacy policy, this will be referenced
+  // > as the contact email of your "data protection officer" for the purpose
+  // > of compliance with regulations such as GDPR.
+  internalEmailAddress: 'support+development@pi-garden.com',
+
+  // Whether to require proof of email address ownership any time a new user
+  // signs up, or when an existing user attempts to change their email address.
+  verifyEmailAddresses: false
 };
