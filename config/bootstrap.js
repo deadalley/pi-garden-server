@@ -36,23 +36,30 @@ module.exports.startSchedules = async function () {
 
 module.exports.seedDatabase = async function () {
   console.log('Seeding database...');
-  const room = await Room.create({ name: 'Bedroom 99' }).fetch();
 
+  const room = await Room.create({ name: 'Bedroom 99' }).fetch();
   console.log('Room created', room);
+
   const plant = await Plant.create({
     name: 'Strawberry (7)',
     plantedDate: '2020-01-01',
     room: room.id,
   }).fetch();
-
   console.log('Plant created', plant);
+
+  const plantSpecification = await PlantSpecification.create({
+    plant: plant.id,
+    temperatureStart: '5',
+    temperatureEnd: '54',
+  }).fetch();
+  console.log('Plant specification created', plantSpecification);
+
   const sensor = await Sensor.create({
     type: 'temperature',
     preferredInterface: 'dht11',
     unit: '°C',
     room: room.id,
   }).fetch();
-
   console.log('Sensor created', sensor);
 };
 

@@ -19,5 +19,9 @@ module.exports = {
       type: 'string',
       required: true,
     },
+    specification: {
+      collection: 'plantspecification',
+      via: 'plant',
+    },
   },
 };
