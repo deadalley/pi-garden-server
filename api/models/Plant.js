@@ -23,5 +23,10 @@ module.exports = {
       collection: 'plantspecification',
       via: 'plant',
     },
+    imageUrl: {
+      type: 'string',
+      required: true,
+      isIn: ['plant01.png', 'plant02.png', 'plant03.png', 'plant04.png'],
+    },
   },
 };

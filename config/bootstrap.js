@@ -44,6 +44,7 @@ module.exports.seedDatabase = async function () {
     name: 'Strawberry',
     plantedDate: '2020-01-01',
     room: room.id,
+    imageUrl: 'plant02.png',
   }).fetch();
   console.log('Plant created', plant);
 
