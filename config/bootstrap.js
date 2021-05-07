@@ -37,11 +37,11 @@ module.exports.startSchedules = async function () {
 module.exports.seedDatabase = async function () {
   console.log('Seeding database...');
 
-  const room = await Room.create({ name: 'Bedroom 99' }).fetch();
+  const room = await Room.create({ name: 'Living Room', avatar: 'tv-set' }).fetch();
   console.log('Room created', room);
 
   const plant = await Plant.create({
-    name: 'Strawberry (7)',
+    name: 'Strawberry',
     plantedDate: '2020-01-01',
     room: room.id,
   }).fetch();
