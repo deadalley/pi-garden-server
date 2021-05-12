@@ -24,14 +24,13 @@ module.exports = {
       const schedule = await Schedule.create({
         sensor: sensorId,
         cronDefinition: '* * * * *',
-        active: true
+        active: true,
       });
 
       res.json(schedule);
     } catch (error) {
-      console.log(error);
       // todo: implement proper error handling
       res.badRequest(error);
     }
-  }
+  },
 };

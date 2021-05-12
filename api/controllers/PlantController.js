@@ -13,13 +13,13 @@ module.exports = {
 
     await PlantSpecification.create({ ...plantParams.specification, plant: plant.id });
 
-    const newPlant = await sails.helpers.populatePlant(plant.id);
+    const newPlant = await Plant.populate(plant);
 
     return res.send(newPlant);
   },
 
   find: async (req, res) => {
-    const plants = await sails.helpers.populatePlants();
+    const plants = await Plant.populateAll();
 
     return res.send(plants);
   },

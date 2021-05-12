@@ -13,5 +13,7 @@ module.exports.routes = {
 
   'GET /signup': { view: 'pages/signup' },
 
-  'POST /sensor/:id/activate': { action: 'sensor/activate' }
+  'POST /sensor/:id/activate': { action: 'sensor/activate' },
+
+  'GET /room/:id/reading/last': { action: 'room/last' },
 };

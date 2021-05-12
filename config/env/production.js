@@ -28,7 +28,7 @@ module.exports = {
    *                                                                         *
    **************************************************************************/
   datastores: {
-    adapter: 'sails-mongo',
+    adapter: 'sails-postgresql',
     /***************************************************************************
      *                                                                          *
      * Configure your default production database.                              *
@@ -68,7 +68,7 @@ module.exports = {
        *                                                                           *
        ****************************************************************************/
       // ssl: true,
-    }
+    },
   },
 
   models: {
@@ -82,7 +82,7 @@ module.exports = {
      * https://sailsjs.com/docs/concepts/models-and-orm/model-settings#?migrate *
      *                                                                          *
      ***************************************************************************/
-    migrate: 'safe'
+    migrate: 'safe',
 
     /***************************************************************************
      *                                                                          *
@@ -107,7 +107,7 @@ module.exports = {
    *                                                                         *
    ***************************************************************************/
   blueprints: {
-    shortcuts: false
+    shortcuts: false,
   },
 
   /***************************************************************************
@@ -137,7 +137,7 @@ module.exports = {
       // allowOrigins: [
       //   'https://example.com',
       // ]
-    }
+    },
   },
 
   /***************************************************************************
@@ -202,8 +202,8 @@ module.exports = {
      ***************************************************************************/
     cookie: {
       // secure: true,
-      maxAge: 24 * 60 * 60 * 1000 // 24 hours
-    }
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+    },
   },
 
   /**************************************************************************
@@ -263,7 +263,7 @@ module.exports = {
    *                                                                         *
    ***************************************************************************/
   log: {
-    level: 'debug'
+    level: 'debug',
   },
 
   http: {
@@ -276,7 +276,7 @@ module.exports = {
      * reduce this considerably to allow more flexibility in purging the cache. *
      *                                                                          *
      ***************************************************************************/
-    cache: 365.25 * 24 * 60 * 60 * 1000 // One year
+    cache: 365.25 * 24 * 60 * 60 * 1000, // One year
 
     /***************************************************************************
      *                                                                          *
@@ -336,7 +336,7 @@ module.exports = {
    ***************************************************************************/
   custom: {
     baseUrl: 'https://example.com',
-    internalEmailAddress: 'support@example.com'
+    internalEmailAddress: 'support@example.com',
 
     // sendgridSecret: 'SG.fake.3e0Bn0qSQVnwb1E4qNPz9JZP5vLZYqjh7sn8S93oSHU',
     // stripeSecret: 'sk_prod__fake_Nfgh82401348jaDa3lkZ0d9Hm',
@@ -350,5 +350,5 @@ module.exports = {
     // sails_custom__stripeSecret=sk_prod__fake_Nfgh82401348jaDa3lkZ0d9Hm
     // ```
     //--------------------------------------------------------------------------
-  }
+  },
 };

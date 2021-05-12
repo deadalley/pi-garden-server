@@ -36,32 +36,54 @@ module.exports.startSchedules = async function () {
 
 module.exports.seedDatabase = async function () {
   console.log('Seeding database...');
-
-  const room = await Room.create({ name: 'Living Room', avatar: 'tv-set' }).fetch();
-  console.log('Room created', room);
-
-  const plant = await Plant.create({
+  const roomParams = { name: 'Living Room', avatar: 'tv-set' };
+  const plantParams = {
     name: 'Strawberry',
     plantedDate: '2020-01-01',
-    room: room.id,
     imageUrl: 'plant02.png',
-  }).fetch();
-  console.log('Plant created', plant);
-
-  const plantSpecification = await PlantSpecification.create({
-    plant: plant.id,
+  };
+  const plantSpecificationParams = {
     temperatureStart: '5',
     temperatureEnd: '54',
-  }).fetch();
-  console.log('Plant specification created', plantSpecification);
-
-  const sensor = await Sensor.create({
+  };
+  const temperatureSensorParams = {
     type: 'temperature',
     preferredInterface: 'dht11',
     unit: '°C',
+  };
+  const humiditySensorParams = {
+    type: 'humidity',
+    preferredInterface: 'dht11',
+    unit: '%',
+  };
+
+  const room = await Room.findOrCreate(roomParams, roomParams);
+  console.log('Room created', room);
+
+  const plant = await Plant.findOrCreate(plantParams, { ...plantParams, room: room.id });
+  console.log('Plant created', plant);
+
+  const plantSpecification = await PlantSpecification.findOrCreate(plantSpecificationParams, {
+    ...plantSpecificationParams,
+    plant: plant.id,
+  });
+  console.log('Plant specification created', plantSpecification);
+
+  const temperatureSensor = await Sensor.findOrCreate(temperatureSensorParams, {
+    ...temperatureSensorParams,
     room: room.id,
-  }).fetch();
-  console.log('Sensor created', sensor);
+  });
+  console.log('Sensor created', temperatureSensor);
+
+  const humiditySensor = await Sensor.findOrCreate(humiditySensorParams, {
+    ...humiditySensorParams,
+    room: room.id,
+  });
+  console.log('Sensor created', humiditySensor);
+
+  const schedule = await Sensor.activate(temperatureSensor);
+  await Sensor.activate(humiditySensor);
+  console.log('Schedule started', schedule);
 };
 
 module.exports.bootstrap = async function () {

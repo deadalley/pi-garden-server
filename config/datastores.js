@@ -31,8 +31,11 @@ module.exports.datastores = {
    ***************************************************************************/
 
   default: {
-    adapter: 'sails-mongo',
-    url: 'mongodb://root@localhost/pi-garden'
+    adapter: 'sails-postgresql',
+    url: 'postgresql://pi:raspberry@localhost:5432/pigarden',
+
+    // adapter: 'sails-mongo',
+    // url: 'mongodb://root@localhost/pi-garden'
 
     /***************************************************************************
      *                                                                          *
@@ -50,5 +53,5 @@ module.exports.datastores = {
      ***************************************************************************/
     // adapter: 'sails-mysql',
     // url: 'mysql://user:password@host:port/database',
-  }
+  },
 };

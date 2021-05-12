@@ -65,9 +65,14 @@ module.exports.models = {
    ***************************************************************************/
 
   attributes: {
-    createdAt: { type: 'number', autoCreatedAt: true },
-    updatedAt: { type: 'number', autoUpdatedAt: true },
-    id: { type: 'string', columnName: '_id' }
+    // PostgreSQL
+    createdAt: { type: 'string', autoCreatedAt: true },
+    updatedAt: { type: 'string', autoUpdatedAt: true },
+    id: { type: 'number', autoIncrement: true },
+    // Mongo
+    // id: { type: 'string', columnName: '_id' },
+    // createdAt: { type: 'string', autoCreatedAt: true },
+    // updatedAt: { type: 'string', autoUpdatedAt: true },
     //--------------------------------------------------------------------------
     //  /\   Using MongoDB?
     //  ||   Replace `id` above with this instead:
@@ -96,7 +101,7 @@ module.exports.models = {
    ******************************************************************************/
 
   dataEncryptionKeys: {
-    default: 'TEapi55q5FPjJquYa9KMyAQ1Pg1Y0nI+M3PKxHZ3lew='
+    default: 'TEapi55q5FPjJquYa9KMyAQ1Pg1Y0nI+M3PKxHZ3lew=',
   },
 
   /***************************************************************************
@@ -112,5 +117,5 @@ module.exports.models = {
    *                                                                          *
    ***************************************************************************/
 
-  cascadeOnDestroy: true
+  cascadeOnDestroy: true,
 };

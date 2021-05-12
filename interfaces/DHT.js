@@ -19,21 +19,15 @@ class DHT {
 
   static schedule(sensorId, reading, frequency) {
     if (!sensorId) {
-      throw new Error(
-        `Cannot schedule ${this.type} on port ${this.port}: sensorId not defined`
-      );
+      throw new Error(`Cannot schedule ${this.type} on port ${this.port}: sensorId not defined`);
     }
 
     if (!reading) {
-      throw new Error(
-        `Cannot schedule ${this.type} on port ${this.port}: reading not defined`
-      );
+      throw new Error(`Cannot schedule ${this.type} on port ${this.port}: reading not defined`);
     }
 
     if (!frequency) {
-      throw new Error(
-        `Cannot schedule ${this.type} on port ${this.port}: frequency not defined`
-      );
+      throw new Error(`Cannot schedule ${this.type} on port ${this.port}: frequency not defined`);
     }
 
     console.log('Scheduling job', sensorId, frequency);
@@ -42,8 +36,9 @@ class DHT {
       const value = await this[reading]();
       await Reading.create({
         sensor: sensorId,
-        value: value
+        value: value,
       });
+      console.log(`Pushed ${value} to ${sensorId}`);
     });
     return job;
   }
@@ -54,5 +49,5 @@ class DHT11 extends DHT {
 }
 
 module.exports = {
-  DHT11
+  DHT11,
 };
