@@ -81,9 +81,8 @@ module.exports.seedDatabase = async function () {
   });
   sails.log.info('Sensor created', humiditySensor.id);
 
-  const schedule = await Sensor.activate(temperatureSensor);
+  await Sensor.activate(temperatureSensor);
   await Sensor.activate(humiditySensor);
-  sails.log.info('Schedule started', schedule.id);
 };
 
 module.exports.bootstrap = async function () {

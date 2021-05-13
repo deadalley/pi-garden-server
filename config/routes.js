@@ -16,4 +16,5 @@ module.exports.routes = {
   'POST /sensor/:id/activate': { action: 'sensor/activate' },
 
   'GET /room/:id/reading/last': { action: 'room/last' },
+  'GET /room/:id/reading/subscribe': { action: 'room/subscribe' },
 };

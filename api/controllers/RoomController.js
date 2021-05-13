@@ -6,50 +6,31 @@
  */
 
 module.exports = {
+  subscribe: async (req, res) => {
+    if (!req.isSocket) {
+      res.badRequest('Only socket can subscribe');
+    }
+
+    const roomId = req.param('id');
+    const room = await Room.findOne({ id: +roomId }).populate('sensors');
+
+    Sensor.subscribe(
+      req,
+      room.sensors.map(({ id }) => id)
+    );
+
+    res.json('Subscribed');
+  },
   last: async (req, res) => {
     const roomId = req.param('id');
 
     if (roomId) {
-      const room = await Room.findOne({ id: roomId }).populate('sensors');
-
-      if (!room) {
-        res.serverError(`Can't find room`);
+      try {
+        const mappedReadings = await sails.helpers.lastReadings(roomId);
+        res.json(mappedReadings);
+      } catch (err) {
+        json.serverError(err);
       }
-
-      const { rows } = await Reading.getDatastore().sendNativeQuery(
-        `SELECT MAX("createdAt") AS "createdAt"
-         FROM reading
-         WHERE sensor IN (${room.sensors.map(({ id }) => id).join(',')})
-         GROUP BY sensor
-        `
-        // `
-        // SELECT DISTINCT ON (sensor) * FROM reading WHERE sensor IN (${room.sensors
-        //   .map(({ id }) => id)
-        //   .join(',')}) ORDER BY sensor, "createdAt" DESC;
-        // `
-      );
-
-      Reading.find({
-        sensor: room.sensors.map(({ id }) => id),
-        createdAt: rows.map(({ createdAt }) => createdAt),
-      })
-        .populate('sensor')
-        .exec((err, readings) => {
-          if (err) {
-            res.serverError(err);
-          }
-
-          if (!readings) {
-            res.serverError(`Can't find readings for this room`);
-          }
-
-          const mappedReadings = readings.reduce(
-            (acc, reading) => ({ ...acc, [reading.sensor.type]: reading }),
-            {}
-          );
-
-          res.json(mappedReadings);
-        });
     } else {
       res.json([]);
     }

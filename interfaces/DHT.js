@@ -34,12 +34,18 @@ class DHT {
     const job = schedule.scheduleJob(frequency, async () => {
       try {
         sails.log.info(`Pushing last ${reading} reading to ${sensorId}`);
+
         const value = await this[reading]();
-        const _reading = await Reading.create({
+
+        await Reading.create({
           sensor: sensorId,
           value: value,
         });
-        await Sensor.publish([sensorId], _reading);
+
+        const sensor = await Sensor.findOne({ id: sensorId });
+
+        await Sensor.publish([sensorId], await sails.helpers.lastReadings(sensor.room));
+
         sails.log.info(`Pushed ${value} to ${sensorId}`);
       } catch (error) {
         sails.log.error(`Could not push to ${sensorId}: `, error);
