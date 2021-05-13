@@ -30,15 +30,20 @@ class DHT {
       throw new Error(`Cannot schedule ${this.type} on port ${this.port}: frequency not defined`);
     }
 
-    console.log('Scheduling job', sensorId, frequency);
+    sails.log.info('Scheduling job', sensorId, frequency);
     const job = schedule.scheduleJob(frequency, async () => {
-      console.log(`Pushing last ${reading} reading to ${sensorId}`);
-      const value = await this[reading]();
-      await Reading.create({
-        sensor: sensorId,
-        value: value,
-      });
-      console.log(`Pushed ${value} to ${sensorId}`);
+      try {
+        sails.log.info(`Pushing last ${reading} reading to ${sensorId}`);
+        const value = await this[reading]();
+        const _reading = await Reading.create({
+          sensor: sensorId,
+          value: value,
+        });
+        await Sensor.publish([sensorId], _reading);
+        sails.log.info(`Pushed ${value} to ${sensorId}`);
+      } catch (error) {
+        sails.log.error(`Could not push to ${sensorId}: `, error);
+      }
     });
     return job;
   }

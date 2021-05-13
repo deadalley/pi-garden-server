@@ -11,9 +11,9 @@
 const interfaces = require('../interfaces');
 
 module.exports.startSchedules = async function () {
-  console.log('Loading schedules...');
+  sails.log.info('Loading schedules...');
   const schedules = await Schedule.find({ active: true }).populate('sensor');
-  console.log({ schedules });
+  sails.log.info({ schedules });
   schedules.forEach((schedule) => {
     if (!schedule.sensor) {
       return;
@@ -21,12 +21,12 @@ module.exports.startSchedules = async function () {
 
     const interface = interfaces[schedule.sensor.preferredInterface];
 
-    console.log({ interfaces });
+    sails.log.info({ interfaces });
     if (!interface) {
-      console.log(`Cannot find interface ${schedule.sensor.preferredInterface}`);
+      sails.log.info(`Cannot find interface ${schedule.sensor.preferredInterface}`);
     }
 
-    console.log(
+    sails.log.info(
       `Setting up schedule for ${schedule.sensor.id}, ${schedule.sensor.type}, ${schedule.cronDefinition}`
     );
 
@@ -35,7 +35,7 @@ module.exports.startSchedules = async function () {
 };
 
 module.exports.seedDatabase = async function () {
-  console.log('Seeding database...');
+  sails.log.info('Seeding database...');
   const roomParams = { name: 'Living Room', avatar: 'tv-set' };
   const plantParams = {
     name: 'Strawberry',
@@ -58,32 +58,32 @@ module.exports.seedDatabase = async function () {
   };
 
   const room = await Room.findOrCreate(roomParams, roomParams);
-  console.log('Room created', room);
+  sails.log.info('Room created', room.id);
 
   const plant = await Plant.findOrCreate(plantParams, { ...plantParams, room: room.id });
-  console.log('Plant created', plant);
+  sails.log.info('Plant created', plant.id);
 
   const plantSpecification = await PlantSpecification.findOrCreate(plantSpecificationParams, {
     ...plantSpecificationParams,
     plant: plant.id,
   });
-  console.log('Plant specification created', plantSpecification);
+  sails.log.info('Plant specification created', plantSpecification.id);
 
   const temperatureSensor = await Sensor.findOrCreate(temperatureSensorParams, {
     ...temperatureSensorParams,
     room: room.id,
   });
-  console.log('Sensor created', temperatureSensor);
+  sails.log.info('Sensor created', temperatureSensor.id);
 
   const humiditySensor = await Sensor.findOrCreate(humiditySensorParams, {
     ...humiditySensorParams,
     room: room.id,
   });
-  console.log('Sensor created', humiditySensor);
+  sails.log.info('Sensor created', humiditySensor.id);
 
   const schedule = await Sensor.activate(temperatureSensor);
   await Sensor.activate(humiditySensor);
-  console.log('Schedule started', schedule);
+  sails.log.info('Schedule started', schedule.id);
 };
 
 module.exports.bootstrap = async function () {
