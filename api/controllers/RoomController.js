@@ -36,4 +36,23 @@ module.exports = {
       res.json([]);
     }
   },
+  readings: async (req, res) => {
+    const roomId = req.param('id');
+
+    const from = req.query.from;
+    const to = req.query.to;
+
+    const room = await Room.findOne({ id: +roomId }).populate('sensors');
+
+    if (!from && !to) {
+      const readings = await Reading.find({ sensor: room.sensors.map(({ id }) => id) });
+      return res.json(readings);
+    } else {
+      const readings = await Reading.find({
+        sensor: room.sensors.map(({ id }) => id),
+        createdAt: { ...(from ? { '>=': from } : {}), ...(to ? { '<=': to } : {}) },
+      });
+      return res.json(readings);
+    }
+  },
 };
