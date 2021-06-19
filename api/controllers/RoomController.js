@@ -8,7 +8,7 @@
 module.exports = {
   subscribe: async (req, res) => {
     if (!req.isSocket) {
-      res.badRequest('Only socket can subscribe');
+      return res.badRequest('Only socket can subscribe');
     }
 
     const roomId = req.param('id');
@@ -19,7 +19,8 @@ module.exports = {
       room.sensors.map(({ id }) => id)
     );
 
-    res.json('Subscribed');
+    sails.log.info(`Subscribed to ${roomId}`);
+    res.json(await sails.helpers.lastReadings(roomId));
   },
   last: async (req, res) => {
     const roomId = req.param('id');
